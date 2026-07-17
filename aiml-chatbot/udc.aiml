@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+    <category>
+        <pattern><set>elgreetings</set> ^</pattern>
+        <template>
+            <think><set name="language">greek</set></think>
+            Γεια σας! Καλώς ήρθατε στο TechStore. Είμαι ο ψηφιακός σας βοηθός.
+            <br/>Πώς μπορώ να σας εξυπηρετήσω;
+                    <button><text>Προϊόντα</text><postback>SHOWPRODUCTS</postback></button>
+                    <button><text>Επικοινωνία</text><postback>CONTACTINFO</postback></button>
+                    <button><text>Κατάσταση Παραγγελίας</text><postback>ORDERSTATUS</postback></button>
+        </template>
+    </category>
+
+    <category>
+        <pattern><set>engreetings</set> ^</pattern>
+        <template>
+            <think><set name="language">english</set></think>
+            Hello! Welcome to TechStore. I am your digital assistant.
+            <br/>How can I help you today?
+                    <button><text>Products</text><postback>SHOWPRODUCTS</postback></button>
+                    <button><text>Contact Us</text><postback>CONTACTINFO</postback></button>
+                    <button><text>Order Status</text><postback>ORDERSTATUS</postback></button>
+        </template>
+    </category>
+
+    <category>
+        <pattern>SHOWPRODUCTS</pattern>
+        <template>
+            <condition name="language">
+                <li value="greek">
+                    Διαθέτουμε Laptops, Smartphones και Tablets. Για ποιο θέλετε να μάθετε την τιμή;
+                    <think><set name="topic">SALES</set></think>
+                </li>
+                <li value="english">
+                    We have Laptops, Smartphones, and Tablets. Which one do you want to check the price for?
+                    <think><set name="topic">SALES</set></think>
+                </li>
+                <li>Παρακαλώ πείτε "Hi" ή "Γεια" πρώτα.
+                    <br/>Please say "Hi" or "Γεια" first.
+                </li>
+            </condition>
+        </template>
+    </category>
+
+    <topic name="SALES">
+        <category>
+            <pattern>*</pattern>
+            <template>
+                <think><set name="checkprice"><map name="prices"><star/></map></set></think>
+                <condition name="checkprice">
+                    <li value="unknown">
+                        <condition name="language">
+                            <li value="greek">Λυπάμαι, δεν βρήκα προϊόν με το όνομα "<star/>". Δοκιμάστε: laptop, smartphone ή tablet.</li>
+                            <li value="english">Sorry, I couldn't find a product named "<star/>". Try: laptop, smartphone, or tablet.</li>
+                        </condition>
+                    </li>
+                    <li>
+                        <condition name="language">
+                            <li value="greek">Η τιμή για το <star/> είναι <get name="checkprice"/>.
+                                Μπορείτε να το δείτε αναλυτικά εδώ:
+                                <link>
+                                    <text>Ιστοσελίδα Προϊόντος</text>
+                                    <url>https://www.techstore.gr/shop</url>
+                                </link>
+                                <br/>
+                            Σας βοήθησε αυτή η πληροφορία;
+                            <button><text>Ναι</text><postback>HELPYES</postback></button>
+                            <button><text>Όχι</text><postback>HELPNO</postback></button>
+                            </li>
+                            <li value="english">The price for <star/> is <get name="checkprice"/>.
+                                You can see more details here:
+                                <link>
+                                    <text>Product Website</text>
+                                    <url>https://www.techstore.gr/en/shop</url>
+                                </link>
+                                <br/>
+                            Did this help you?
+                            <button><text>Yes</text><postback>HELPYES</postback></button>
+                            <button><text>No</text><postback>HELPNO</postback></button>
+                            </li>
+                        </condition>
+                    </li>
+                </condition>
+            </template>
+        </category>
+    </topic>
+    
+    <category>
+    <pattern>^ ΤΙΜΗ ^</pattern> 
+    <template><srai>SHOWPRODUCTS</srai></template>
+    </category>
+
+    <category>
+    <pattern>^ ΤΙΜΕς ^</pattern> 
+    <template><srai>SHOWPRODUCTS</srai></template>
+    </category>
+    
+    <category>
+    <pattern>^ ΠΑΡΑΓΓΕΛΙΑ ^</pattern> 
+    <template><srai>ORDERSTATUS</srai></template>
+    </category>
+    
+    <category>
+    <pattern>^ PRICE ^</pattern> 
+    <template><srai>SHOWPRODUCTS</srai></template>
+    </category>
+    
+    <category>
+    <pattern>^ PRICES ^</pattern> 
+    <template><srai>SHOWPRODUCTS</srai></template>
+    </category>
+
+    <category>
+    <pattern>^ ORDER ^</pattern> 
+    <template><srai>ORDERSTATUS</srai></template>
+    </category>
+    
+    <category>
+    <pattern>HELPYES</pattern>
+    <template>
+        <condition name="language">
+            <li value="greek">Χαίρομαι πολύ! Θέλετε βοήθεια με κάτι άλλο;</li>
+            <li value="english">Great! Do you need help with anything else?</li>
+        </condition>
+    </template>
+    </category>
+    
+    <category>
+        <pattern>ΝΑΙ ^</pattern>
+        <that>_ ΘΈΛΕΤΕ ΒΟΉΘΕΙΑ ΜΕ ΚΆΤΙ ΆΛΛΟ</that>
+        <template>
+            <condition name="language">
+                <li value="greek">Βεβαίως! Ας επιστρέψουμε στις επιλογές μας.
+                    <button><text>Προϊόντα</text><postback>SHOWPRODUCTS</postback></button>
+                    <button><text>Επικοινωνία</text><postback>CONTACTINFO</postback></button>
+                    <button><text>Κατάσταση Παραγγελίας</text><postback>ORDERSTATUS</postback></button>
+                </li>
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>YES ^</pattern>
+        <that>_ HELP WITH ANYTHING ELSE</that>
+        <template>
+            <condition name="language">
+                <li value="english">Certainly! Let's go back to the main options.
+                    <button><text>Products</text><postback>SHOWPRODUCTS</postback></button>
+                    <button><text>Contact Us</text><postback>CONTACTINFO</postback></button>
+                    <button><text>Order Status</text><postback>ORDERSTATUS</postback></button>
+                </li>
+            </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>HELPNO</pattern>
+        <template>
+            <condition name="language">
+                <li value="greek">Λυπάμαι. Θέλετε να σας συνδέσω με έναν εκπρόσωπο;</li>
+                <li value="english">I'm sorry. Would you like to speak with an agent?</li>
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>ΝΑΙ ^</pattern>
+        <that>_ ΣΥΝΔΈΣΩ ΜΕ ΈΝΑΝ ΕΚΠΡΌΣΩΠΟ</that>
+        <template>
+            Παρακαλώ περιμένετε μια στιγμή... 
+            <br/>🎧 Συνδέεστε με τον πρώτο διαθέσιμο εκπρόσωπο. Σας ευχαριστούμε για την υπομονή σας!
+        </template>
+    </category>
+
+    <category>
+        <pattern>YES ^</pattern>
+        <that>_ SPEAK WITH AN AGENT</that>
+        <template>
+            Please wait a moment... 
+            <br/>🎧 Connecting you to the first available agent. Thank you for your patience!
+        </template>
+    </category>
+    
+    <category>
+        <pattern>ΟΧΙ ^</pattern>
+        <that>_ ΣΥΝΔΈΣΩ ΜΕ ΈΝΑΝ ΕΚΠΡΌΣΩΠΟ </that>
+        <template>
+            Κανένα πρόβλημα. Θέλετε βοήθεια με κάτι άλλο ;
+        </template>
+    </category>
+
+    <category>
+        <pattern>NO ^</pattern>
+        <that>_ SPEAK WITH AN AGENT</that>
+        <template>
+            No problem. Do you need help with anything else?
+        </template>
+    </category>
+    
+    <category>
+        <pattern>^ ΕΠΙΚΟΙΝΩΝΙΑ ^</pattern>
+        <template><srai>CONTACTINFO</srai></template>
+    </category>
+    
+    <category>
+        <pattern>^ ΠΛΗΡΟΦΟΡΙΕΣ ^</pattern>
+        <template><srai>CONTACTINFO</srai></template>
+    </category>
+    
+    <category>
+    <pattern>ΠΟΥ ΒΡΙΣΚΕΣΤΕ</pattern>
+    <template><srai>CONTACTINFO</srai></template>
+    </category>
+    
+    <category>
+        <pattern>^ CONTACT ^</pattern>
+        <template><srai>CONTACTINFO</srai></template>
+    </category>
+    
+    <category>
+        <pattern>^ INFO ^</pattern>
+        <template><srai>CONTACTINFO</srai></template>
+    </category>
+    
+    <category>
+    <pattern>^ LOCATION ^</pattern>
+    <template><srai>CONTACTINFO</srai></template>
+    </category>
+
+    
+    
+    <category>
+        <pattern>CONTACTINFO</pattern>
+        <template>
+            <condition name="language">
+                <li value="greek">
+                    Μπορείτε να μας βρείτε:
+                    <br/>📍 Διεύθυνση: Τσιμισκή 46, Θεσσαλονίκη
+                    <br/>📞 Τηλέφωνο: 2310 000000
+                    <br/>📧 Email: info@techstore.gr
+                    <br/><br/>Θέλετε βοήθεια με κάτι άλλο;
+                </li>
+                <li value="english">
+                    You can find us at:
+                    <br/>📍 Address: 46 Tsimiski St, Thessaloniki
+                    <br/>📞 Phone: +30 2310 000000
+                    <br/>📧 Email: info@techstore.gr
+                    <br/><br/>Do you need help with anything else?
+                </li>
+                <li>
+                    Παρακαλώ πείτε "Γεια" ή "Hi" για να επιλέξετε γλώσσα.
+                    <br/>Please say "Γεια" or "Hi" to choose a language.
+                    <br/>(Info: Τσιμισκή 46, Thessaloniki | info@techstore.gr)
+                </li>
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>ORDERSTATUS</pattern>
+        <template>
+            <condition name="language">
+                <li value="greek">Έχετε τον αριθμό παραγγελίας σας;</li>
+                <li value="english">Do you have your order number?</li>
+            </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>ΝΑΙ ^</pattern>
+        <that>ΈΧΕΤΕ ΤΟΝ ΑΡΙΘΜΌ ΠΑΡΑΓΓΕΛΊΑς ΣΑς</that>
+        <template>Παρακαλώ πληκτρολογήστε τον αριθμό της παραγγελίας σας.</template>
+    </category>
+
+    <category>
+        <pattern>YES ^</pattern>
+        <that>DO YOU HAVE YOUR ORDER NUMBER</that>
+        <template>Please type your order number.</template>
+    </category>
+    
+    <category>
+        <pattern>*</pattern>
+        <that>ΠΑΡΑΚΑΛΏ ΠΛΗΚΤΡΟΛΟΓΉΣΤΕ ΤΟΝ ΑΡΙΘΜΌ ΤΗς ΠΑΡΑΓΓΕΛΊΑς ΣΑς</that>
+        <template>
+            <think><set name="order_id"><star/></set></think>
+            Τέλεια! Αναζητώ την παραγγελία σας με αριθμό <get name="order_id"/>. 
+            <br/>Κατάσταση: 📦 **Σε εξέλιξη**.
+            <br/><br/>
+            Θέλετε βοήθεια με κάτι άλλο;
+        </template>
+    </category>
+    
+    <category>
+        <pattern>*</pattern>
+        <that>PLEASE TYPE YOUR ORDER NUMBER</that>
+        <template>
+            <think><set name="order_id"><star/></set></think>
+            Perfect! I am looking up order number <get name="order_id"/>. 
+            <br/>Status: 📦 **In progress**.
+            <br/><br/>
+            Do you need help with anything else?
+        </template>
+    </category>
+
+    <category>
+        <pattern>ΟΧΙ ^</pattern>
+        <that>ΈΧΕΤΕ ΤΟΝ ΑΡΙΘΜΌ ΠΑΡΑΓΓΕΛΊΑς ΣΑς </that>
+        <template>Δεν πειράζει. Μπορείτε να τον βρείτε στο email επιβεβαίωσης της αγοράς σας.
+                <br/><br/>
+                Θέλετε βοήθεια με κάτι άλλο;
+        </template>
+    </category>
+
+    <category>
+        <pattern>NO ^</pattern>
+        <that>DO YOU HAVE YOUR ORDER NUMBER</that>
+        <template>No problem. You can find it in your purchase confirmation email.
+                <br/><br/>
+                Do you need help with anything else?
+        </template>
+    </category>
+    
+
+    <category>
+        <pattern>ΟΧΙ ^</pattern>
+        <that>ΘΈΛΕΤΕ ΒΟΉΘΕΙΑ ΜΕ ΚΆΤΙ ΆΛΛΟ</that>
+        <template>
+            Χάρηκα που βοηθήσαμε! Σας ευχόμαστε μια υπέροχη ημέρα από το TechStore. Αντίο!
+        </template>
+    </category>
+
+    <category>
+        <pattern>NO ^</pattern>
+        <that>DO YOU NEED HELP WITH ANYTHING ELSE</that>
+        <template>
+            It was a pleasure helping you! Have a great day from TechStore. Goodbye!
+        </template>
+    </category>
+    
+    <category>
+        <pattern>*</pattern>
+        <template>
+            <condition name="language">
+                <li value="greek">
+                    Λυπάμαι, δεν κατάλαβα τι εννοείτε με το "<star/>". 
+                    <br/>Θέλετε να δοκιμάσετε ξανά ή να συνδεθείτε με εκπρόσωπο;
+                    <button>
+                        <text>Σύνδεση με άνθρωπο</text>
+                        <postback>HUMANAGENT</postback>
+                    </button>
+                </li>
+                <li value="english">
+                    I am afraid I don't understand "<star/>". 
+                    <br/>Would you like to try again or speak to a human? 
+                    <button>
+                        <text>Speak to human</text>
+                        <postback>HUMANAGENT</postback>
+                    </button>
+                </li>
+                <li>
+                    Παρακαλώ πείτε "Γεια" για Ελληνικά ή "Hi" for English για να ξεκινήσουμε.
+                    <br/>Please say "Γεια" for Greek or "Hi" for English to start.
+                </li>
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>HUMANAGENT</pattern>
+        <template>
+            <condition name="language">
+                <li value="greek">Παρακαλώ περιμένετε μια στιγμή... <br/>🎧 Συνδέεστε με εκπρόσωπο.</li>
+                <li value="english">Please wait a moment... <br/>🎧 Connecting you to an agent.</li>
+            </condition>
+        </template>
+    </category>
+
+</aiml>

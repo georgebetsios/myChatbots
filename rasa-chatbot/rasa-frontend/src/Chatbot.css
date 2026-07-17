@@ -1,0 +1,361 @@
+/* ==========================================================================
+   1. WRAPPER & LAUNCHER BUTTON
+   ========================================================================== */
+.chatbot-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+}
+
+.chatbot-launcher {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8cd353 0%, #6aa83b 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(106, 168, 59, 0.3), inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chatbot-launcher:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 12px 28px rgba(106, 168, 59, 0.4), inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.launcher-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.launcher-tooltip {
+  position: absolute;
+  right: 80px;
+  background-color: #3a4d5f;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeInRight 0.4s ease forwards;
+  pointer-events: none;
+}
+
+.launcher-tooltip::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent #3a4d5f;
+}
+
+/* ==========================================================================
+   2. ICONS & KEYFRAME ANIMATIONS
+   ========================================================================== */
+.svg-icon {
+  width: 28px;
+  height: 28px;
+  stroke: white;
+  display: block;
+  transition: transform 0.2s;
+}
+
+.chatbot-launcher svg {
+  animation: scaleIn 0.25s ease forwards;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-dot {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+    box-shadow: 0 0 0 4px rgba(46, 204, 113, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+  }
+}
+
+/* ==========================================================================
+   3. CHAT WINDOW & HEADER INTERFACE
+   ========================================================================== */
+.chatbot-window {
+  position: fixed;
+  bottom: 105px;
+  right: 30px;
+  width: 380px;
+  height: 500px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+.chatbot-header {
+  background-color: #3a4d5f;
+  color: white;
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  border-bottom: 2px solid #7bc143;
+}
+
+.chatbot-header-logo {
+  width: 100px;
+  height: auto;
+  background-color: white;
+  padding: 4px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-header-title {
+  text-align: center;
+}
+
+.chatbot-header-title h3 {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.chatbot-online-status {
+  font-size: 11px;
+  opacity: 0.9;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chatbot-online-status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background-color: #2ecc71;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+/* ==========================================================================
+   4. MESSAGES DISPLAY AREA
+   ========================================================================== */
+.chatbot-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #f8f9fa;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 80%;
+}
+
+.message-container.bot {
+  align-self: flex-start;
+  align-items: flex-start;
+  padding-left: 8px;
+}
+
+.message-container.user {
+  align-self: flex-end;
+  align-items: flex-end;
+  padding-right: 8px;
+}
+
+/* ==========================================================================
+   5. MESSAGE BUBBLES Styling
+   ========================================================================== */
+.message-bubble {
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  width: fit-content;
+}
+
+.message-bubble.bot {
+  padding: 6px 16px;
+  background-color: #e9ecef;
+  color: #333;
+  border-top-left-radius: 2px;
+}
+
+.message-bubble.bot a {
+  color: #0066cc;
+  text-decoration: underline;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.message-bubble.bot a:hover {
+  color: #004499;
+}
+
+.message-bubble.user {
+  padding: 12px 16px;
+  background-color: #7bc143;
+  color: white;
+  border-top-right-radius: 2px;
+}
+
+/* ==========================================================================
+   6. INTERACTIVE ACTION BUTTONS
+   ========================================================================== */
+.chat-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  align-self: flex-start;
+  align-items: flex-start;
+  padding-left: 2px;
+  animation: scaleIn 0.3s ease forwards;
+}
+
+.chat-action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  color: #6aa83b;
+  border: 2px solid #6aa83b;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-clip: padding-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.chat-action-button:hover {
+  background: linear-gradient(135deg, #8cd353 0%, #6aa83b 100%);
+  color: #ffffff;
+  border-color: #5b9432;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(106, 168, 59, 0.3);
+}
+
+.btn-svg-icon {
+  flex-shrink: 0;
+  stroke: #6aa83b;
+  transition: stroke 0.2s ease;
+}
+
+.chat-action-button:hover .btn-svg-icon {
+  stroke: #ffffff;
+}
+
+/* ==========================================================================
+   7. INPUT FORM & SUBMISSION BUTTON
+   ========================================================================== */
+.chatbot-input-form {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #dee2e6;
+  padding: 12px 15px;
+  background-color: white;
+}
+
+.chatbot-input-form input {
+  flex: 1;
+  border: 1px solid #ced4da;
+  border-radius: 24px;
+  padding: 12px 20px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chatbot-input-form input:focus {
+  border-color: #3a4d5f;
+}
+
+.chatbot-input-form button {
+  background-color: #3a4d5f;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(58, 77, 95, 0.2);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.chatbot-input-form button:hover {
+  background-color: #7bc143;
+  box-shadow: 0 4px 12px rgba(123, 193, 67, 0.4);
+  transform: scale(1.08) rotate(-15deg);
+}
+
+.chatbot-input-form button:active {
+  transform: scale(0.95);
+}

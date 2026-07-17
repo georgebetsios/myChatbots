@@ -1,0 +1,39 @@
+# ===== REACT FRONTEND =====
+rasa-frontend/node_modules/
+rasa-frontend/dist/
+rasa-frontend/dist-ssr/
+rasa-frontend/.env
+rasa-frontend/*.local
+
+# ===== RASA BACKEND =====
+rasa-backend/.rasa/
+rasa-backend/.rasa/*
+rasa-backend/.rasa/cache/
+rasa-backend/models/
+rasa-backend/.venv/
+rasa-backend/venv/
+rasa-backend/__pycache__/
+rasa-backend/*.pyc
+rasa-backend/actions/__pycache__/
+
+
+# ===== LOGS & DEBUGGERS =====
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+
+# ===== EDITOR FILES & SYSTEM LOGS =====
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
